@@ -16,6 +16,15 @@ public class Product {
     private float price;
     private String description;
 
+    public Product() {
+    }
+
+    public Product(String name, float price, String description) {
+        this.name = name;
+        this.price = price;
+        this.description = description;
+    }
+
     public Integer getId() {
         return id;
     }

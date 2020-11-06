@@ -6,6 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.ArrayList;
+import java.util.Optional;
 
 @Controller
 public class ShopController {
@@ -19,5 +25,27 @@ public class ShopController {
         Iterable<Product> products = productRepository.findAll();
         model.addAttribute("products", products);
         return "shop-main";
+    }
+
+    @GetMapping("/shop/addProduct")
+    public String shopAdd(Model model) {
+        model.addAttribute("title", "Add product");
+        return "shop-add";
+    }
+
+    @GetMapping("/shop/{id}")
+    public String shopDetails(@PathVariable(value = "id") int id, Model model){
+        Optional<Product> product = productRepository.findById(id);
+        ArrayList<Product> result = new ArrayList<>();
+        product.ifPresent(result::add);
+        model.addAttribute("product", result);
+        return "shop-details";
+    }
+
+    @PostMapping("/shop/addProduct")
+    public String shopPostAddProduct(@RequestParam String name, @RequestParam String price, @RequestParam String description, Model model){
+        Product product = new Product(name, Float.parseFloat(price), description);
+        productRepository.save(product);
+        return "redirect:/shop";
     }
 }
