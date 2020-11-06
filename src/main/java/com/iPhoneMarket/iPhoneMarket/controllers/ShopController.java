@@ -42,10 +42,29 @@ public class ShopController {
         return "shop-details";
     }
 
+    @GetMapping("/shop/{id}/edit")
+    public String shopEdit(@PathVariable(value = "id") int id, Model model){
+        Optional<Product> product = productRepository.findById(id);
+        ArrayList<Product> result = new ArrayList<>();
+        product.ifPresent(result::add);
+        model.addAttribute("product", result);
+        return "shop-edit";
+    }
+
     @PostMapping("/shop/addProduct")
     public String shopPostAddProduct(@RequestParam String name, @RequestParam String price, @RequestParam String description, Model model){
         Product product = new Product(name, Float.parseFloat(price), description);
         productRepository.save(product);
         return "redirect:/shop";
+    }
+
+    @PostMapping("/shop/{id}/edit")
+    public String shopPostEdit(@PathVariable(value = "id") int id, @RequestParam String name, @RequestParam String price, @RequestParam String description, Model model){
+        Product product = productRepository.findById(id).orElseThrow();
+        product.setName(name);
+        product.setPrice(Float.parseFloat(price));
+        product.setDescription(description);
+        productRepository.save(product);
+        return "redirect:/shop/{id}";
     }
 }
