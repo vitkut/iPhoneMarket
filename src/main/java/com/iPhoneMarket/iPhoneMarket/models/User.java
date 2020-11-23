@@ -1,25 +1,42 @@
 package com.iPhoneMarket.iPhoneMarket.models;
 
+import org.springframework.lang.NonNull;
+
+import javax.annotation.processing.Generated;
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
+@Table(name = "usr")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-
-    private int permissionLevel;
+    private Long id;
 
     private String username;
-    private String password, first_name, last_name, email;
+    private String password;
+    private boolean active;
+
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.LAZY)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Role> role;
+
     private float balance;
 
-    public int getId() {
+    public User(){}
+
+    public User(String username, String password){
+        this.username = username;
+        this.password = password;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -39,28 +56,20 @@ public class User {
         this.password = password;
     }
 
-    public String getFirst_name() {
-        return first_name;
+    public boolean isActive() {
+        return active;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public Set<Role> getRole() {
+        return role;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setRole(Set<Role> role) {
+        this.role = role;
     }
 
     public float getBalance() {
@@ -69,13 +78,5 @@ public class User {
 
     public void setBalance(float balance) {
         this.balance = balance;
-    }
-
-    public void setPermissionLevel(int permValue){
-        this.permissionLevel = permValue;
-    }
-
-    public int getPermissionLevel(){
-        return permissionLevel;
     }
 }

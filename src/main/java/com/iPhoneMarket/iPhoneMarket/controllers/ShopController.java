@@ -67,4 +67,11 @@ public class ShopController {
         productRepository.save(product);
         return "redirect:/shop/{id}";
     }
+
+    @PostMapping("/shop/{id}/delete")
+    public String shopPostDelete(@PathVariable(value = "id") int id, Model model){
+        Product product = productRepository.findById(id).orElseThrow();
+        productRepository.delete(product);
+        return "redirect:/shop";
+    }
 }
