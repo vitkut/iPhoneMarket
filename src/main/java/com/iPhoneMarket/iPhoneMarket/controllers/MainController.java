@@ -15,7 +15,6 @@ public class MainController {
     @GetMapping("/")
     public String main(Model model) {
         model.addAttribute("title", "Main page");
-        logger.error("Enter od Main page (debug)");
         return "main";
     }
 
@@ -23,7 +22,6 @@ public class MainController {
 
     public String about(Model model){
         model.addAttribute("title", "About");
-        logger.error("Enter od About page (debug)");
         return "about";
     }
 }
