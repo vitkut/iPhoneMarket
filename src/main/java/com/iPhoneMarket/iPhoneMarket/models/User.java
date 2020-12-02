@@ -1,42 +1,34 @@
 package com.iPhoneMarket.iPhoneMarket.models;
 
-import org.springframework.lang.NonNull;
-
-import javax.annotation.processing.Generated;
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "usr")
+@Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
 
+    @Column(name = "username")
     private String username;
+
+    @Column(name = "password")
     private String password;
-    private boolean active;
 
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.LAZY)
-    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
-    @Enumerated(EnumType.STRING)
-    private Set<Role> role;
+    @ManyToMany
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles;
 
-    private float balance;
-
-    public User(){}
-
-    public User(String username, String password){
-        this.username = username;
-        this.password = password;
+    public User() {
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -56,27 +48,11 @@ public class User {
         this.password = password;
     }
 
-    public boolean isActive() {
-        return active;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public Set<Role> getRole() {
-        return role;
-    }
-
-    public void setRole(Set<Role> role) {
-        this.role = role;
-    }
-
-    public float getBalance() {
-        return balance;
-    }
-
-    public void setBalance(float balance) {
-        this.balance = balance;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }
