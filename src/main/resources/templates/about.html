@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>About</title>
@@ -7,5 +7,8 @@
 <body>
     <h2>About page</h2>
     <a href="/">Main</a>
+    <a href="/admin" th:if="${admin}">Admin page</a>
+    <br>
+    <a href="/sign-out">Sign out</a>
 </body>
 </html>
