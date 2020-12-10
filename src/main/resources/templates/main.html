@@ -1,11 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8">
-    <title>Main</title>
+    <title>Categories</title>
 </head>
 <body>
-    <h2>Main page</h2>
-    <a href="/about">About page</a>
+    <header th:insert="blocks/header :: header"></header>
+    <div>
+        <h2>Categories</h2>
+    </div>
+    <div th:each="el : ${categories}">
+        <h4><a th:href="'/categories/'+${el.urlName}" th:text="${el.name}"/></h4>
+    </div>
 </body>
 </html>

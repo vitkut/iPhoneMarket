@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${category}"/>
+</head>
+<body>
+<header th:insert="blocks/header :: header"></header>
+<div>
+    <h2 th:text="${category}"/>
+</div>
+<div th:each="el : ${products}">
+    <h4><a th:href="'/products/'+${el.id}" th:text="${el.name}"/></h4>
+    <h2 th:text="'$'+${el.price}"></h2>
+</div>
+</body>
+</html>

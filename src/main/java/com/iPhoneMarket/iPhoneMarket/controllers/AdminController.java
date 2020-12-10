@@ -1,6 +1,8 @@
 package com.iPhoneMarket.iPhoneMarket.controllers;
 
+import com.iPhoneMarket.iPhoneMarket.service.HeaderService;
 import com.iPhoneMarket.iPhoneMarket.service.SecurityService;
+import com.iPhoneMarket.iPhoneMarket.service.SecurityServiceImpl;
 import com.iPhoneMarket.iPhoneMarket.service.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,9 +25,15 @@ public class AdminController {
     @Autowired
     private SecurityService securityService;
 
+    @Autowired
+    private HeaderService headerService;
+
     @GetMapping("/admin")
     public String adminGet(Model model){
         logger.debug( "Adm page");
+
+        model = headerService.getHeader(model);
+
         String username = securityService.findLoggedInUsername();
         model.addAttribute("admin_username", username);
         return "admin";

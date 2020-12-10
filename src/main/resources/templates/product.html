@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titleName}"/>
+</head>
+<body>
+<header th:insert="blocks/header :: header"></header>
+<div th:each="el : ${product}">
+    <h3 th:text="${el.name}"/>
+    <a href="/profile/to-basket" class="btn btn-outline-primary">Add to basket</a><br>
+    <h2 th:text="'$'+${el.price}"></h2><br>
+    <h4>Characteristics:</h4><br>
+    <h4 th:text="${el.charact}"/><br>
+</div>
+</body>
+</html>

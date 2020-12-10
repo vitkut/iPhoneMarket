@@ -77,4 +77,12 @@ public class SecurityServiceImpl implements SecurityService{
         }
         return false;
     }
+
+    public boolean isAuthenticated(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(!(auth instanceof AnonymousAuthenticationToken) && auth != null){
+            return true;
+        }
+        return false;
+    }
 }

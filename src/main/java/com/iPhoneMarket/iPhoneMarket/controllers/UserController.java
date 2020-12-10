@@ -1,6 +1,7 @@
 package com.iPhoneMarket.iPhoneMarket.controllers;
 
 import com.iPhoneMarket.iPhoneMarket.models.User;
+import com.iPhoneMarket.iPhoneMarket.service.HeaderService;
 import com.iPhoneMarket.iPhoneMarket.service.SecurityService;
 import com.iPhoneMarket.iPhoneMarket.service.SecurityServiceImpl;
 import com.iPhoneMarket.iPhoneMarket.service.UserService;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
+import java.util.Optional;
+
 @Controller
 public class UserController {
 
@@ -23,6 +27,9 @@ public class UserController {
 
     @Autowired
     private SecurityService securityService;
+
+    @Autowired
+    private HeaderService headerService;
 
     @GetMapping("/login")
     public String loginGet(Model model){
@@ -69,5 +76,16 @@ public class UserController {
         user = new User(username, password);
         userService.save(user);
         return "redirect:/login";
+    }
+
+    @GetMapping("/profile")
+    public String profileGet(Model model){
+        User user = userService.findByUsername(securityService.findLoggedInUsername());
+        ArrayList<User> resultUser = new ArrayList<>();
+        resultUser.add(user);
+        model = headerService.getHeader(model);
+        model.addAttribute("titleName", user.getUsername());
+        model.addAttribute("profile", resultUser);
+        return "profile";
     }
 }

@@ -5,6 +5,7 @@
     <title>Admin page</title>
 </head>
 <body>
+    <header th:insert="blocks/header :: header"></header>
     <h2>Admin page</h2>
     <h3 th:text="'Hello,' +${admin_username}"/>
     <a href="/">Main</a>

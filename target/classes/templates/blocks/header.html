@@ -1,0 +1,8 @@
+<div th:fragment="header">
+    <div th:if="${isAuth}">
+        <header th:insert="blocks/header-auth :: header"></header>
+    </div>
+    <div th:unless="${isAuth}">
+        <header th:insert="blocks/header-not-auth :: header"></header>
+    </div>
+</div>
