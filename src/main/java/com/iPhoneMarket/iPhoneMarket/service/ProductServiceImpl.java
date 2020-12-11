@@ -36,4 +36,12 @@ public class ProductServiceImpl implements ProductService{
     public List<Product> findAll(){
         return productRepository.findAll();
     }
+
+    public void delete(Integer id) throws Exception{
+        Product product = findById(id);
+        if(product == null){
+            throw new Exception("Can't find product");
+        }
+        productRepository.delete(product);
+    }
 }

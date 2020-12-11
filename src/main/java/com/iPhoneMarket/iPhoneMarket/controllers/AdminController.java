@@ -10,10 +10,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.awt.geom.FlatteningPathIterator;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -74,4 +77,76 @@ public class AdminController {
         return "redirect:/";
     }
 
+    @GetMapping("/admin/products")
+    public String adminProductsGet(Model model){
+        List<Product> products =((ProductServiceImpl) productService).findAll();
+        model = headerService.getHeader(model);
+        model.addAttribute("products", products);
+        return "admin-products";
+    }
+
+    @GetMapping("/admin/products/{id}/edit")
+    public String adminProductsEditGet(@PathVariable(name = "id") Integer id, Model model){
+        model = headerService.getHeader(model);
+        Product product = productService.findById(id);
+        ArrayList<Product> resultProduct = new ArrayList<>();
+        resultProduct.add(product);
+        model.addAttribute("titleName", product.getName());
+        model.addAttribute("product", resultProduct);
+        return "product-edit";
+    }
+
+    @PostMapping("/admin/products/{id}/edit")
+    public String adminProductsEditPost(@PathVariable(name = "id") Integer id, @RequestParam(name = "name") String name,
+                                        @RequestParam(name = "price") String priceStr, @RequestParam(name = "charact") String charact, Model model){
+        try{
+            if(name.equals("") || name.length()>255){
+                throw new Exception("Wrong name");
+            }
+            Float price = Float.parseFloat(priceStr);
+            if(price <= 0){
+                throw new Exception("Wrong price");
+            }
+            if(charact.equals("") || charact.length() == 0){
+                throw new Exception("Wrong charact");
+            }
+            Product product = productService.findById(id);
+            product.setName(name);
+            product.setPrice(price);
+            product.setCharact(charact);
+            productService.save(product);
+        } catch (Exception ex){
+            model.addAttribute("error", true);
+            return "product-edit";
+        }
+        return "redirect:/admin/products";
+    }
+
+    @GetMapping("/admin/products/{id}/delete")
+    public String adminProductsDeleteGet(@PathVariable(name = "id") Integer id, Model model){
+        model = headerService.getHeader(model);
+        Product product = productService.findById(id);
+        ArrayList<Product> resultProduct = new ArrayList<>();
+        resultProduct.add(product);
+        model.addAttribute("titleName", product.getName());
+        model.addAttribute("product", resultProduct);
+        return "product-delete";
+    }
+
+    @PostMapping("/admin/products/{id}/delete/true")
+    public String adminProductsDeleteTruePost(@PathVariable(name = "id") Integer id, Model model){
+        model = headerService.getHeader(model);
+        try{
+            ((ProductServiceImpl) productService).delete(id);
+        } catch (Exception ex){
+            return "accessDenied";
+        }
+        return "redirect:/admin/products";
+    }
+
+    @PostMapping("/admin/products/{id}/delete/false")
+    public String adminProductsDeleteFalsePost(@PathVariable(name = "id") Integer id, Model model){
+        model = headerService.getHeader(model);
+        return "redirect:/admin/products/"+id;
+    }
 }

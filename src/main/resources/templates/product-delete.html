@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titleName}"/>
+</head>
+<body>
+<header th:insert="blocks/header :: header"></header>
+<div th:each="el : ${product}">
+    <h2>Delete product?</h2>
+    <h3 th:text="${el.name}"/>
+    <h2 th:text="'$'+${el.price}"></h2><br>
+    <form th:action="'/admin/products/'+${el.id}+'/delete/true'" method="post">
+        <button type="submit">Yes</button><br>
+    </form>
+    <form th:action="'/admin/products/'+${el.id}+'/delete/false'" method="post">
+        <button type="submit">No</button><br>
+    </form>
+</div>
+</body>
+</html>
