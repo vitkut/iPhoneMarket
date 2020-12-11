@@ -1,18 +1,14 @@
 package com.iPhoneMarket.iPhoneMarket.controllers;
 
-import com.iPhoneMarket.iPhoneMarket.models.Category;
 import com.iPhoneMarket.iPhoneMarket.models.Product;
-import com.iPhoneMarket.iPhoneMarket.models.User;
 import com.iPhoneMarket.iPhoneMarket.service.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,26 +29,14 @@ public class MainController {
     private ProductService productService;
 
     @Autowired
-    private CategoryService categoryService;
-
-    @Autowired
     private HeaderService headerService;
 
     @GetMapping("/")
     public String main(Model model) {
-        List<Category> categories = categoryService.findAll();
+        List<Product> products =((ProductServiceImpl) productService).findAll();
         model = headerService.getHeader(model);
-        model.addAttribute("categories", categories);
-        return "main";
-    }
-
-    @GetMapping("/categories/{urlName}")
-    public String categoriesUrlNameGet(@PathVariable(name = "urlName") String urlName, Model model){
-        Set<Product> products = categoryService.findByUrlName(urlName).getProducts();
-        model = headerService.getHeader(model);
-        model.addAttribute("category", categoryService.findByUrlName(urlName).getName());
         model.addAttribute("products", products);
-        return "products-in-category";
+        return "main";
     }
 
     @GetMapping("/products/{id}")

@@ -18,7 +18,7 @@ public class User {
     private String password;
 
     @Column(name = "balance")
-    private float balance;
+    private Float balance;
 
     @ManyToMany
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -30,7 +30,7 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.balance = 0;
+        this.balance = 0f;
     }
 
     public Integer getId() {
@@ -65,11 +65,11 @@ public class User {
         this.roles = roles;
     }
 
-    public float getBalance() {
+    public Float getBalance() {
         return balance;
     }
 
-    public void setBalance(float balance) {
+    public void setBalance(Float balance) {
         this.balance = balance;
     }
 

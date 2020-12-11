@@ -53,13 +53,6 @@ public class SecurityServiceImpl implements SecurityService{
         }
     }
 
-    public void signOut(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if(!(auth instanceof AnonymousAuthenticationToken) && auth != null){
-            auth.setAuthenticated(false);
-        }
-    }
-
     public boolean hasRole(String role){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(!(auth instanceof AnonymousAuthenticationToken) && auth != null){

@@ -1,8 +1,6 @@
 package com.iPhoneMarket.iPhoneMarket.service;
 
-import com.iPhoneMarket.iPhoneMarket.models.Category;
 import com.iPhoneMarket.iPhoneMarket.models.Product;
-import com.iPhoneMarket.iPhoneMarket.repository.CategoryRepository;
 import com.iPhoneMarket.iPhoneMarket.repository.ProductRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -21,15 +20,9 @@ public class ProductServiceImpl implements ProductService{
     @Autowired
     private ProductRepository productRepository;
 
-    @Autowired
-    private CategoryRepository categoryRepository;
-
     @Override
-    public void save(Product product, Integer categoryId) {
+    public void save(Product product) {
         logger.debug("(save) product: "+product.toString());
-        Set<Category> categories = new HashSet<>();
-        categories.add(categoryRepository.getOne(categoryId));
-        product.setCategories(categories);
         productRepository.save(product);
     }
 
@@ -38,5 +31,9 @@ public class ProductServiceImpl implements ProductService{
         logger.debug("(findById) id: "+id);
         Optional<Product> optionalProduct = productRepository.findById(id);
         return optionalProduct.orElse(null);
+    }
+
+    public List<Product> findAll(){
+        return productRepository.findAll();
     }
 }

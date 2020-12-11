@@ -20,9 +20,8 @@ public class Product {
     @Column(name = "charact")
     private String charact;
 
-    @ManyToMany
-    @JoinTable(name = "product_categories", joinColumns = @JoinColumn(name = "id_product"), inverseJoinColumns = @JoinColumn(name = "id_category"))
-    private Set<Category> categories;
+    public Product() {
+    }
 
     public Product(String name, Float price, String charact) {
         this.name = name;
@@ -62,14 +61,6 @@ public class Product {
         this.charact = charact;
     }
 
-    public Set<Category> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(Set<Category> categories) {
-        this.categories = categories;
-    }
-
     @Override
     public String toString() {
         return "Product{" +
@@ -77,7 +68,6 @@ public class Product {
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 ", charact='" + charact + '\'' +
-                ", categories=" + categories +
                 '}';
     }
 }

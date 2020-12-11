@@ -4,7 +4,7 @@ import com.iPhoneMarket.iPhoneMarket.models.Product;
 
 public interface ProductService {
 
-    void save(Product product, Integer categoryId);
+    void save(Product product);
 
     Product findById(Integer id);
 }
