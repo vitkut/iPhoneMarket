@@ -15,17 +15,14 @@
 <div th:each="el : ${user}">
     <form th:action="'/profile/edit/'" method="post">
 
-        <h4>Username:</h4>
+        <h4>Name:</h4>
         <input type="text" name="name" placeholder="Enter new name" th:value="${el.name}">
         <h4>Password:</h4>
         <input type="password" name="password" placeholder="Enter new password" th:value="${el.password}">
         <h4>Confirm password:</h4>
         <input type="password" name="confirm_password" placeholder="Confirm your password"/>
-        <button type="submit">Save and logout</button>
+        <button type="submit">Save</button>
     </form><br>
-</div>
-<div>
-    <h4>You need to login again for the changes to take effect</h4>
 </div>
 </body>
 </html>

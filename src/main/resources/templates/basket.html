@@ -25,5 +25,15 @@
         <button type="submit">Delete</button>
     </form>
 </div>
+<div th:if="${isNotEmpty}">
+    <a>Summary cost: </a>
+    <a th:text="${sumCost}+'$'"/>
+    <form action="/profile/basket/buyAll" method="post">
+        <button type="submit">Buy all</button>
+    </form>
+    <form action="/profile/basket/deleteAll" method="post">
+        <button type="submit">Delete all</button>
+    </form>
+</div>
 </body>
 </html>

@@ -9,6 +9,9 @@
 <div>
     <h4 th:text="${error}"/>
 </div>
+<div>
+    <h4 th:text="${param.message}"/>
+</div>
 <div th:each="el : ${product}">
     <h3 th:text="${el.name}"/>
     <form th:action="'/profile/to-basket/'+${el.id}" method="post">

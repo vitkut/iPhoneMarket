@@ -6,5 +6,7 @@ public interface UserService {
 
     void save(User user);
 
+    void saveNew(User user);
+
     User findByUsername(String username);
 }

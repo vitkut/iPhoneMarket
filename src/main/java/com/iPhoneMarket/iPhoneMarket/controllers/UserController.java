@@ -1,6 +1,7 @@
 package com.iPhoneMarket.iPhoneMarket.controllers;
 
 import com.iPhoneMarket.iPhoneMarket.models.Product;
+import com.iPhoneMarket.iPhoneMarket.models.Role;
 import com.iPhoneMarket.iPhoneMarket.models.User;
 import com.iPhoneMarket.iPhoneMarket.service.*;
 import org.apache.logging.log4j.LogManager;
@@ -10,10 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.sql.Time;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 public class UserController {
@@ -31,7 +32,6 @@ public class UserController {
 
     @Autowired
     private ProductService productService;
-
 
     @GetMapping("/login")
     public String loginGet(Model model){
@@ -70,6 +70,15 @@ public class UserController {
             if(username.length() < 4 || username.length() > 255){
                 throw new Exception("Username is very short or large");
             }
+            Pattern pattern = Pattern.compile("\\W+");
+            Matcher matcher = pattern.matcher(username);
+            if(matcher.find()){
+                throw new Exception("Wrong symbols in username");
+            }
+            matcher = pattern.matcher(password);
+            if(matcher.matches()){
+                throw new Exception("Wrong symbols in password");
+            }
             if(!password.equals(confirmPassword)){
                 throw new Exception("Password and confirm password if not the same");
             }
@@ -94,6 +103,7 @@ public class UserController {
         model = headerService.getHeader(model);
         model.addAttribute("titleName", user.getName());
         model.addAttribute("profile", resultUser);
+        model.addAttribute("isAdmin", ((SecurityServiceImpl) securityService).hasRole("ADMIN"));
         return "profile";
     }
 
@@ -142,6 +152,16 @@ public class UserController {
             if(validityYear < 0 || validityYear > 99){
                 throw new Exception("Validity year is wrong");
             }
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            int currentYear = calendar.get(Calendar.YEAR);
+            if(validityYear < currentYear % 100){
+                int currentMonth = calendar.get(Calendar.MONTH);
+                if(validityMonth < currentMonth){
+                    throw new Exception("The shelf life of the card has expired");
+                }
+            }
             if(cvv < 0){
                 throw new Exception("CVV is wrong");
             }
@@ -152,11 +172,11 @@ public class UserController {
             User user = userService.findByUsername(securityService.findLoggedInUsername());
             user.setBalance(user.getBalance()+amount);
             userService.save(user);
-            return "redirect:/profile";
         } catch (Exception ex){
             model.addAttribute("error", ex.getMessage());
+            return "redirect:/profile/input-money/card-check";
         }
-        return "card-check";
+        return "redirect:/profile";
     }
 
     @GetMapping("/profile/basket")
@@ -167,6 +187,13 @@ public class UserController {
         model.addAttribute("products", user.getProducts());
         if(user.getProducts().isEmpty()){
             model.addAttribute("message", "Basket is empty");
+        } else {
+            float sumCost = 0;
+            for(Product p:user.getProducts()){
+                sumCost += p.getPrice();
+            }
+            model.addAttribute("isNotEmpty", true);
+            model.addAttribute("sumCost", sumCost);
         }
         return "basket";
     }
@@ -177,9 +204,7 @@ public class UserController {
             User user = userService.findByUsername(securityService.findLoggedInUsername());
             Product product = productService.findById(id);
             Set<Product> userProducts = user.getProducts();
-            if(userProducts.contains(product)){
-                throw new Exception("Has been added");
-            }
+
             userProducts.add(product);
             user.setProducts(userProducts);
             userService.save(user);
@@ -212,7 +237,13 @@ public class UserController {
             model.addAttribute("error", ex.getMessage());
             return "redirect:/profile/basket";
         }
-        return "redirect:/";
+        return "redirect:/profile/basket/buy/successful";
+    }
+
+    @GetMapping("/profile/basket/buy/successful")
+    public String successfulBuyProductInBasketGet(Model model){
+        model = headerService.getHeader(model);
+        return "product";
     }
 
     @GetMapping("/profile/basket/delete/{id}")
@@ -257,11 +288,14 @@ public class UserController {
                 model.addAttribute("message", "Successfully edited");
                 return "redirect:/profile";
             }
-            if(!user.getPassword().equals(password) && !password.equals(confirmPassword)){
-                throw new Exception("Password and confirm password if not the same");
-            }
             if(name.length() < 1 || name.length() > 255){
                 throw new Exception("Name is very short or large");
+            }
+            if(password.length() < 4 || password.length() > 255){
+                throw new Exception("Password is very short or large");
+            }
+            if(!user.getPassword().equals(password) && !password.equals(confirmPassword)) {
+                throw new Exception("Password and confirm password if not the same");
             }
             user.setName(name);
             user.setPassword(password);
