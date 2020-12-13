@@ -9,6 +9,9 @@
 <div>
     <h2>iPhoneMarket</h2>
 </div>
+<div>
+    <h4 th:text="${param.message}"/>
+</div>
 <div th:each="el : ${products}">
     <h4><a th:href="'/products/'+${el.id}" th:text="${el.name}"/></h4>
     <h4 th:text="'$'+${el.price}"></h4>

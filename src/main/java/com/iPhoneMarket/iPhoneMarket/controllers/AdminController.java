@@ -1,6 +1,7 @@
 package com.iPhoneMarket.iPhoneMarket.controllers;
 
 import com.iPhoneMarket.iPhoneMarket.models.Product;
+import com.iPhoneMarket.iPhoneMarket.models.User;
 import com.iPhoneMarket.iPhoneMarket.service.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -148,5 +149,42 @@ public class AdminController {
     public String adminProductsDeleteFalsePost(@PathVariable(name = "id") Integer id, Model model){
         model = headerService.getHeader(model);
         return "redirect:/admin/products/"+id;
+    }
+
+    @GetMapping("/admin/users")
+    public String usersGet(Model model){
+        model = headerService.getHeader(model);
+        List<User> users = ((UserServiceImpl) userService).findAll();
+        model.addAttribute("users", users);
+        return "user-list";
+    }
+
+    @GetMapping("/admin/users/{username}")
+    public String userProfileGet(@PathVariable(name = "username") String username, Model model){
+        model = headerService.getHeader(model);
+        try{
+            User user = userService.findByUsername(username);
+            List<User> resUser = new ArrayList<>();
+            resUser.add(user);
+            model.addAttribute("profile", resUser);
+            model.addAttribute("roles", user.getRoles());
+            model.addAttribute("products", user.getProducts());
+            model.addAttribute("username", username);
+        } catch (Exception ex){
+            model.addAttribute("error", ex.getMessage());
+        }
+        return "user-profile";
+    }
+
+    @PostMapping("/admin/users/{username}/delete")
+    public String deleteUserProfilePost(@PathVariable(name = "username") String username, Model model){
+        try{
+            User user = userService.findByUsername(username);
+            ((UserServiceImpl) userService).remove(user);
+            model.addAttribute("message", "User "+username+" is successfully deleted");
+        } catch (Exception ex){
+            model.addAttribute("message", ex.getMessage());
+        }
+        return "redirect:/admin/users";
     }
 }

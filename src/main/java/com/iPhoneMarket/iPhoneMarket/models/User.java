@@ -17,6 +17,9 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "name")
+    private String name;
+
     @Column(name = "balance")
     private Float balance;
 
@@ -24,12 +27,17 @@ public class User {
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
+    @ManyToMany
+    @JoinTable(name = "basket", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private Set<Product> products;
+
     public User() {
     }
 
-    public User(String username, String password) {
+    public User(String username, String password, String name) {
         this.username = username;
         this.password = password;
+        this.name = name;
         this.balance = 0f;
     }
 
@@ -57,6 +65,14 @@ public class User {
         this.password = password;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Set<Role> getRoles() {
         return roles;
     }
@@ -71,6 +87,14 @@ public class User {
 
     public void setBalance(Float balance) {
         this.balance = balance;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
     }
 
     @Override

@@ -6,11 +6,16 @@
 </head>
 <body>
 <header th:insert="blocks/header :: header"></header>
+<div>
+    <h4 th:text="${error}"/>
+</div>
 <div th:each="el : ${product}">
     <h3 th:text="${el.name}"/>
-    <a href="/profile/to-basket" class="btn btn-outline-primary">Add to basket</a><br>
-    <h2 th:text="'$'+${el.price}"></h2><br>
-    <h4>Characteristics:</h4><br>
+    <form th:action="'/profile/to-basket/'+${el.id}" method="post">
+        <button type="submit">Add to basket</button>
+    </form>
+    <h2 th:text="'$'+${el.price}"></h2>
+    <h4>Characteristics:</h4>
     <h4 th:text="${el.charact}"/><br>
 </div>
 </body>

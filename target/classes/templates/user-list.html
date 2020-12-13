@@ -2,19 +2,18 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8">
-    <title>iPhoneMarket</title>
+    <title>Users</title>
 </head>
 <body>
 <header th:insert="blocks/header :: header"></header>
 <div>
-    <h2>iPhoneMarket</h2>
+    <h2>Users</h2>
 </div>
 <div>
     <h4 th:text="${param.message}"/>
 </div>
-<div th:each="el : ${products}">
-    <h4><a th:href="'/products/'+${el.id}" th:text="${el.name}"/></h4>
-    <h4 th:text="'$'+${el.price}"></h4>
+<div th:each="el : ${users}">
+    <h4><a th:href="'/admin/users/'+${el.username}" th:text="${el.username}"/></h4>
 </div>
 </body>
 </html>
