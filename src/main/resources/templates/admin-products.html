@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Product management</title>
+</head>
+<body>
+<header th:insert="blocks/header :: header"></header>
+<div>
+    <h2>Product manager</h2>
+</div>
+<div th:each="el : ${products}">
+    <h4><a th:href="'/products/'+${el.id}" th:text="${el.name}"/></h4>
+    <h4 th:text="'$'+${el.price}"></h4>
+    <a th:href="'/admin/products/'+${el.id}+'/edit'">Edit</a>
+    <a th:href="'/admin/products/'+${el.id}+'/delete'">Delete</a>
+</div>
+</body>
+</html>

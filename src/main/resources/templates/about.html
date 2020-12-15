@@ -1,17 +1,15 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="${title}"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <title>About</title>
 </head>
 <body>
     <header th:insert="blocks/header :: header"></header>
-    <div class="container mt-5">
-        <h4><b>Hi, my name is Vitaliy</b></h4>
-        <h10>It is my project "iPhoneMarket"</h10>
-        <a>At this web-site you can "buy" some iPhones</a>
-        <br><a href="https://github.com/vitkut"><b>My GitHub</b></a>
-    </div>
+    <h2>About page</h2>
+    <a href="/">Main</a>
+    <a href="/admin" th:if="${admin}">Admin page</a>
+    <br>
+    <a href="/sign-out">Sign out</a>
 </body>
 </html>

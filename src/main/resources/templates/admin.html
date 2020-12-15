@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin page</title>
+</head>
+<body>
+    <header th:insert="blocks/header :: header"></header>
+    <h2>Admin page</h2>
+    <h3 th:text="'Hello,' +${admin_username}"/>
+    <a href="/admin/add-product">Add product</a><br>
+    <a href="/admin/products">Product manager</a><br>
+    <a href="/admin/users">Users</a><br>
+    <a href="/">Main</a>
+</body>
+</html>

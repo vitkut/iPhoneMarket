@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titleName}"/>
+</head>
+<body>
+<header th:insert="blocks/header :: header"></header>
+<div th:each="el : ${product}">
+    <form th:action="'/admin/products/'+${el.id}+'/edit'" method="post">
+
+        <h4>Name:</h4>
+        <input type="text" name="name" placeholder="Enter product name" th:value="${el.name}"><br>
+        <h4>Price:</h4>
+        <input type="text" name="price" placeholder="Enter product price" th:value="${el.price}"><br>
+        <h4>Characteristic</h4>
+        <textarea name="charact" placeholder="Enter product characteristic" th:text="${el.charact}"/><br>
+        <button type="submit">Save</button><br>
+    </form>
+</div>
+<div>
+    <h4 th:if="${error}">Something is wrong</h4>
+</div>
+</body>
+</html>

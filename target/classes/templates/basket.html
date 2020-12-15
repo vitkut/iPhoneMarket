@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Basket</title>
+</head>
+<body>
+<header th:insert="blocks/header :: header"></header>
+<div>
+    <h3 th:text="'Basket of user '+${name}"/>
+</div>
+<div>
+    <h4 th:text="${message}"/>
+</div>
+<div>
+    <h4 th:text="${param.error}"/>
+</div>
+<div th:each="el : ${products}">
+    <a th:href="'/products/'+${el.id}" th:text="${el.name}"/>
+    <h4 th:text="'$'+${el.price}"></h4>
+    <form th:action="'/profile/basket/buy/'+${el.id}" method="post">
+        <button type="submit">Buy</button>
+    </form>
+    <form th:action="'/profile/basket/delete/'+${el.id}" method="post">
+        <button type="submit">Delete</button>
+    </form>
+</div>
+<div th:if="${isNotEmpty}">
+    <a>Summary cost: </a>
+    <a th:text="${sumCost}"/>
+    <form action="/profile/basket/buyAll" method="post">
+        <button type="submit">Buy all</button>
+    </form>
+    <form action="/profile/basket/deleteAll" method="post">
+        <button type="submit">Delete all</button>
+    </form>
+</div>
+</body>
+</html>

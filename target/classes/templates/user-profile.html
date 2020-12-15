@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titleName}"/>
+</head>
+<body>
+<header th:insert="blocks/header :: header"></header>
+<div>
+    <h2>View user</h2>
+</div>
+<div>
+    <h4 th:text="${error}"/>
+</div>
+<div th:each="el : ${profile}">
+    <h3 th:text="'Username: '+${el.username}"/>
+    <h3 th:text="'Name: '+${el.name}"/>
+    <h3 th:text="'Balance: $'+${el.balance}"></h3><br>
+</div>
+<div>
+    <h3>Roles:</h3>
+</div>
+<div th:each="el : ${roles}">
+    <h3 th:text="${el.name}"/>
+</div>
+<div>
+    <h3>Basket:</h3>
+</div>
+<div th:each="el : ${products}">
+    <a th:href="'/products/'+${el.id}" th:text="${el.name}"/>
+    <h4 th:text="'$'+${el.price}"></h4>
+</div>
+<div>
+    <form th:action="'/admin/users/'+${username}+'/delete'" method="post">
+        <button type="submit">Delete user</button>
+    </form>
+</div>
+</body>
+</html>

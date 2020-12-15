@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Money input</title>
+</head>
+<body>
+<header th:insert="blocks/header :: header"></header>
+<div>
+    <form action="/profile/input-money/card-check" method="post">
+        <h4>Amount, $</h4>
+        <input type="text" name="amount" placeholder="Enter amount">
+        <h4>Card number:</h4>
+        <input type="text" name="cardNumber1" placeholder="****">
+        <input type="text" name="cardNumber2" placeholder="****">
+        <input type="text" name="cardNumber3" placeholder="****">
+        <input type="text" name="cardNumber4" placeholder="****"><br>
+        <h4>Validity:</h4>
+        <input type="text" name="validityMonth" placeholder="**">
+        <a>/</a>
+        <input type="text" name="validityYear" placeholder="**"><br>
+        <h4>CVV:</h4>
+        <input type="password" name="cvv" placeholder="***"><br>
+        <button type="submit">Add</button><br>
+    </form>
+</div>
+<div>
+    <h4 th:text="${param.error}"/>
+</div>
+</body>
+</html>

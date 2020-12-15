@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+</head>
+<body>
+    <div>
+        <form action="/reg" method="post">
+            <input type="text" name="username" placeholder="Enter username"><br>
+            <input type="text" name="name" placeholder="Enter name"><br>
+            <input type="password" name="password" placeholder="Enter password"><br>
+            <input type="password" name="confirmPassword" placeholder="Confirm password"><br>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    <div>
+        <h5 th:text="${error}"/>
+    </div>
+</body>
+</html>
