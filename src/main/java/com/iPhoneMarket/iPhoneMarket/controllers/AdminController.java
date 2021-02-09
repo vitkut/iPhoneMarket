@@ -1,6 +1,7 @@
 package com.iPhoneMarket.iPhoneMarket.controllers;
 
 import com.iPhoneMarket.iPhoneMarket.models.Product;
+import com.iPhoneMarket.iPhoneMarket.models.Role;
 import com.iPhoneMarket.iPhoneMarket.models.User;
 import com.iPhoneMarket.iPhoneMarket.service.*;
 import org.apache.logging.log4j.LogManager;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.awt.geom.FlatteningPathIterator;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -164,6 +166,9 @@ public class AdminController {
         model = headerService.getHeader(model);
         try{
             User user = userService.findByUsername(username);
+            if(user == null){
+                throw new Exception("User isn't exist");
+            }
             List<User> resUser = new ArrayList<>();
             resUser.add(user);
             model.addAttribute("profile", resUser);
@@ -180,11 +185,69 @@ public class AdminController {
     public String deleteUserProfilePost(@PathVariable(name = "username") String username, Model model){
         try{
             User user = userService.findByUsername(username);
+            if(user == null){
+                throw new Exception("User isn't exist");
+            }
             ((UserServiceImpl) userService).remove(user);
             model.addAttribute("message", "User "+username+" is successfully deleted");
         } catch (Exception ex){
             model.addAttribute("message", ex.getMessage());
         }
         return "redirect:/admin/users";
+    }
+
+    @GetMapping("/admin/users/{username}/changeRole")
+    public String changeRoleUserGet(@PathVariable(name = "username") String username, Model model){
+        model = headerService.getHeader(model);
+        try{
+            User user = userService.findByUsername(username);
+            if(user == null){
+                throw new Exception("User isn't exist");
+            }
+            List<Role> allRoles = new ArrayList<>();
+            allRoles = new ArrayList<>();
+            for(Role r:((UserServiceImpl) userService).findAllRoles()){
+                if(!user.getRoles().contains(r)){
+                    allRoles.add(r);
+                }
+            }
+            List<User> resUser = new ArrayList<>();
+            resUser.add(user);
+            model.addAttribute("profile", resUser);
+            model.addAttribute("roles", user.getRoles());
+            model.addAttribute("allRoles", allRoles);
+            model.addAttribute("username", username);
+        } catch (Exception ex){
+            model.addAttribute("error", ex.getMessage());
+        }
+        return "user-change-role";
+    }
+
+    @PostMapping("/admin/users/{username}/changeRole/delete/{id}")
+    public String deleteUserRolePost(@PathVariable(name = "username") String username, @PathVariable(name = "id") Integer roleId, Model model){
+        try{
+            User user = userService.findByUsername(username);
+            if(user == null){
+                throw new Exception("User isn't exist");
+            }
+            ((UserServiceImpl) userService).deleteUserRole(user, roleId);
+        } catch (Exception ex){
+            model.addAttribute("error", ex.getMessage());
+        }
+        return "redirect:/admin/users/"+username;
+    }
+
+    @PostMapping("/admin/users/{username}/changeRole/add/{id}")
+    public String addUserRolePost(@PathVariable(name = "username") String username, @PathVariable(name = "id") Integer roleId, Model model){
+        try{
+            User user = userService.findByUsername(username);
+            if(user == null){
+                throw new Exception("User isn't exist");
+            }
+            ((UserServiceImpl) userService).addUserRole(user, roleId);
+        } catch (Exception ex){
+            model.addAttribute("error", ex.getMessage());
+        }
+        return "redirect:/admin/users/"+username;
     }
 }

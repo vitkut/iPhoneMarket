@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public void saveNew(User user){
         Set<Role> roles = new HashSet<>();
-        roles.add(roleRepository.getOne(1));
+        roles.add(roleRepository.getOne(2));
         user.setRoles(roles);
         userRepository.save(user);
     }
@@ -48,7 +48,30 @@ public class UserServiceImpl implements UserService{
         return userRepository.findAll();
     }
 
+    public List<Role> findAllRoles(){return roleRepository.findAll();}
+
     public void remove(User user){
         userRepository.delete(user);
+    }
+
+    public void deleteUserRole(User user, Integer roleId) throws Exception{
+        Role role = roleRepository.getOne(roleId);
+        if(role == null || !user.getRoles().contains(role)){
+            throw new Exception("User hasn't this role");
+        }
+        user.getRoles().remove(role);
+        save(user);
+    }
+
+    public void addUserRole(User user, Integer roleId) throws Exception{
+        Role role = roleRepository.getOne(roleId);
+        if(role == null){
+            throw new Exception("Role isn't exist");
+        }
+        if(user.getRoles().contains(role)){
+            throw new Exception("User has this role");
+        }
+        user.getRoles().add(role);
+        save(user);
     }
 }

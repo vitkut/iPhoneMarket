@@ -22,20 +22,14 @@
 </div>
 <div th:each="el : ${roles}">
     <h3 th:text="${el.name}"/>
-</div>
-<div>
-    <h3>Basket:</h3>
-</div>
-<div th:each="el : ${products}">
-    <a th:href="'/products/'+${el.id}" th:text="${el.name}"/>
-    <h4 th:text="'$'+${el.price}"></h4>
-</div>
-<div>
-    <form th:action="'/admin/users/'+${username}+'/delete'" method="post">
-        <button type="submit">Delete user</button>
+    <form th:action="'/admin/users/'+${username}+'/changeRole/delete/'+${el.id}" method="post">
+        <button type="submit">Delete</button>
     </form>
-    <form th:action="'/admin/users/'+${username}+'/changeRole'" method="get">
-        <button type="submit">Change roles</button>
+</div>
+<div th:each="el : ${allRoles}">
+    <h3 th:text="${el.name}"/>
+    <form th:action="'/admin/users/'+${username}+'/changeRole/add/'+${el.id}" method="post">
+        <button type="submit">Add</button>
     </form>
 </div>
 </body>

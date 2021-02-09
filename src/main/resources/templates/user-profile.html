@@ -34,6 +34,9 @@
     <form th:action="'/admin/users/'+${username}+'/delete'" method="post">
         <button type="submit">Delete user</button>
     </form>
+    <form th:action="'/admin/users/'+${username}+'/changeRole'" method="get">
+        <button type="submit">Change roles</button>
+    </form>
 </div>
 </body>
 </html>

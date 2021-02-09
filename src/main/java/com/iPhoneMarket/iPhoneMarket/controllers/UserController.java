@@ -86,7 +86,7 @@ public class UserController {
                 throw new Exception("Username is very short or large");
             }
             user = new User(username, password, name);
-            userService.save(user);
+            userService.saveNew(user);
         } catch (Exception ex){
             model.addAttribute("error", ex.getMessage());
             return "reg";

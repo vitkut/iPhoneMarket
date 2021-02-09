@@ -27,7 +27,7 @@
 </div>
 <div th:if="${isNotEmpty}">
     <a>Summary cost: </a>
-    <a th:text="${sumCost}"/>
+    <a th:text="${sumCost}+'$'"/>
     <form action="/profile/basket/buyAll" method="post">
         <button type="submit">Buy all</button>
     </form>
